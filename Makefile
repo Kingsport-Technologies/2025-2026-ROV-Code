@@ -1,7 +1,7 @@
 # Define variables (conventionally in uppercase)
 CXX = g++
 TARGET = topend
-OBJS = topcomputer.o pwmmath.o
+OBJS = topcomputer.o pwmmath.o websocketserver.o
 
 # The default target (often 'all') builds the program
 all: $(TARGET)
@@ -10,14 +10,12 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET)
 
-# Rule to compile main.o from main.cpp and utils.h
-topcomputer.o: topcomputer.cpp pwmmath.hpp
+topcomputer.o: topcomputer.cpp websocketserver.hpp
 	$(CXX) -c topcomputer.cpp
-
-# Rule to compile utils.o from utils.cpp and utils.h
 pwmmath.o: pwmmath.cpp pwmmath.hpp
 	$(CXX) -c pwmmath.cpp
-
+websocketserver.o: websocketserver.cpp websocketserver.hpp pwmmath.hpp
+	$(CXX) -c websocketserver.cpp
 # Phony target to clean up generated files
 clean:
 	rm -f $(TARGET) $(OBJS)
