@@ -7,10 +7,11 @@
 #include <unistd.h>
 #include <chrono>
 #include "json.hpp"
+#include "pwmmath.hpp"
 
 using namespace std;
 using json = nlohmann::json;
-
+PwmMath math;
 typedef websocketpp::server<websocketpp::config::asio> server;
 void on_message(server* s,
                 websocketpp::connection_hdl hdl,
@@ -20,15 +21,24 @@ void on_message(server* s,
     json data = json::parse(current_data);
     if(data["type"] == "command")
     {
-        // cout << "Received Command" << endl;
+        math.left_x = data["gamepad"]["axes"][0];
+        math.left_y = data["gamepad"]["axes"][1];
+        math.run_loop();
+        json j;
+        j["thrusters"]["horiz_front_left"];
+        j["thrusters"];
     }
     if(data["type"] == "ping")
     {
-        cout << "Ping" << endl;
+        websocketpp::lib::error_code ec;
+        s->send(hdl, "Ping", msg->get_opcode(), ec);
+        if (ec) {
+            std::cout << "Send error: " << ec.message() << std::endl;
+        }
     }
     else
     {
-        cout << "Received" << current_data << endl;
+        // cout << "Received" << current_data << endl;
     }
 }
 
