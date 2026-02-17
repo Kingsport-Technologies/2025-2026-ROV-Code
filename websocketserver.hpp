@@ -14,6 +14,7 @@ class WebSocketServer
     public:   
         WebSocketServer();
         void on_message(websocketpp::connection_hdl hdl,server::message_ptr msg);
+        void start_server();
     protected:
         server ws;
         PwmMath math;

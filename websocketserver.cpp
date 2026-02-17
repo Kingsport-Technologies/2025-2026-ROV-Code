@@ -5,6 +5,10 @@ WebSocketServer::WebSocketServer()
 {
     ws.init_asio();
     ws.set_message_handler(std::bind(&WebSocketServer::on_message, this, std::placeholders::_1, std::placeholders::_2));
+    
+}
+void WebSocketServer::start_server()
+{
     ws.listen(9002);
     ws.start_accept();
     ws.run();
