@@ -7,9 +7,9 @@
 #include "websocketserver.hpp"
 
 using namespace std;
-WebSocketServer server;
+WebSocketServer server_rx;
 
 int main(int argc, char* argv[])
 {
-    server.start_server();
+    server_rx.start_server();
 }

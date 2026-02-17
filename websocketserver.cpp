@@ -5,7 +5,7 @@ WebSocketServer::WebSocketServer()
 {
     ws.init_asio();
     ws.set_message_handler(std::bind(&WebSocketServer::on_message, this, std::placeholders::_1, std::placeholders::_2));
-    
+    ws.clear_access_channels(websocketpp::log::alevel::all);
 }
 void WebSocketServer::start_server()
 {
@@ -20,15 +20,16 @@ void WebSocketServer::on_message(websocketpp::connection_hdl hdl,server::message
     json data = json::parse(current_data);
     if(data["type"] == "command")
     {
-        WebSocketServer::math.left_x = data["gamepad"]["axes"][0];
-        WebSocketServer::math.left_y = data["gamepad"]["axes"][1];
-        WebSocketServer::math.run_loop();
+        math.left_x = data["gamepad"]["axes"][0];
+        math.left_y = data["gamepad"]["axes"][1];
+        math.run_loop();
         json j;
         j["thrusters"]["horiz_front_left"];
         j["thrusters"];
     }
     if(data["type"] == "ping")
     {
+        cout << "Ping" << endl;
         websocketpp::lib::error_code ec;
         s->send(hdl, "Ping", msg->get_opcode(), ec);
         if (ec) {
