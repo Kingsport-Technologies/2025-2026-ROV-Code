@@ -23,9 +23,7 @@ void WebSocketServer::on_message(websocketpp::connection_hdl hdl,server::message
         math.left_x = data["gamepad"]["axes"][0];
         math.left_y = data["gamepad"]["axes"][1];
         math.run_loop();
-        json j;
-        j["thrusters"]["horiz_front_left"];
-        j["thrusters"];
+        json j = ready_send();
     }
     if(data["type"] == "ping")
     {
@@ -40,4 +38,13 @@ void WebSocketServer::on_message(websocketpp::connection_hdl hdl,server::message
     {
         // cout << "Received" << current_data << endl;
     }
+}
+json WebSocketServer::ready_send()
+{
+    json j;
+    j["thrusters"]["hfrontleft"] = math.horiz_front_left;
+    j["thrusters"]["hfrontright"] = math.horiz_front_right;
+    j["thrusters"]["hbackleft"] = math.horiz_back_left;
+    j["thrusters"]["hbackright"] = math.horiz_back_right;
+    return j;
 }
