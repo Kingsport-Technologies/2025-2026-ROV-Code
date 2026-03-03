@@ -24,6 +24,7 @@ void WebSocketServer::on_message(websocketpp::connection_hdl hdl,server::message
         math.left_y = data["gamepad"]["axes"][1];
         math.run_loop();
         json j = ready_send();
+        callback(j);
     }
     if(data["type"] == "ping")
     {
@@ -47,4 +48,8 @@ json WebSocketServer::ready_send()
     j["thrusters"]["hbackleft"] = math.horiz_back_left;
     j["thrusters"]["hbackright"] = math.horiz_back_right;
     return j;
+}
+void WebSocketServer::send_callback(std::function<void(json)> newCallback)
+{
+    callback = newCallback;
 }
