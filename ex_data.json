@@ -1,0 +1,103 @@
+{
+  "time": 1770757536282,
+  "gamepad": {
+    "id": "054c-09cc-Sony Interactive Entertainment Wireless Controller",
+    "index": 0,
+    "timestamp": 168013,
+    "axes": [
+      0.019607843137254832,
+      0.027450980392156765,
+      -0.07450980392156858,
+      -0.03529411764705881,
+      0,
+      -1
+    ],
+    "buttons": [
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      },
+      {
+        "pressed": false,
+        "touched": false,
+        "value": 0
+      }
+    ]
+  }
+}
