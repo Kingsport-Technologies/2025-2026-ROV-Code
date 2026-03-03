@@ -28,11 +28,11 @@ void WebSocketServer::on_message(websocketpp::connection_hdl hdl,server::message
     }
     if(data["type"] == "ping")
     {
-        cout << "Ping" << endl;
+        // cout << "Ping" << endl;
         websocketpp::lib::error_code ec;
         s->send(hdl, "Ping", msg->get_opcode(), ec);
         if (ec) {
-            std::cout << "Send error: " << ec.message() << std::endl;
+            // std::cout << "Send error: " << ec.message() << std::endl;
         }
     }
     else

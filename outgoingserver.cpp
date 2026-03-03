@@ -4,7 +4,9 @@ outgoingserver::outgoingserver()
 {
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     serverAddress.sin_family = AF_INET;
+    connected = false;
 }
+
 outgoingserver::~outgoingserver()
 {
     if(connected)
@@ -12,12 +14,24 @@ outgoingserver::~outgoingserver()
         close(clientSocket);
     }
 }
+
 void outgoingserver::start(const char* ip, int port)
 {
     serverAddress.sin_port = htons(port);
-    serverAddress.sin_addr.s_addr = inet_pton(AF_INET, ip, &(ip));
+    // correctly convert the textual IP to binary form
+    int ret = inet_pton(AF_INET, ip, &serverAddress.sin_addr);
+    if(ret <= 0) {
+        if(ret == 0)
+            std::cerr << "Invalid address format: " << ip << std::endl;
+        else
+            perror("inet_pton");
+        exit(EXIT_FAILURE);
+    }
 
-    connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    if(connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) {
+        perror("connect");
+        exit(EXIT_FAILURE);
+    }
     connected = true;
 }
 void outgoingserver::sendMessage(string content)
