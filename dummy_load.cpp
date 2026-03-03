@@ -14,7 +14,7 @@ void signal_callback_handler(int signum)
     if(signum == 2 and connected)
     {
         close(serverSocket);
-        std::cout << "Socket Successfully Closed";
+        std::cout << "Socket Successfully Closed" << std::endl;
     }
     exit(signum);
 }
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     signal(SIGINT, signal_callback_handler);
     if(argc != 2)
     {
-        std::cout << "Remeber, the port is a required argument";
+        std::cout << "Remeber, the port is a required argument" << std::endl;
         return 1;
     }
     int port = std::stoi(argv[1]);
