@@ -30,12 +30,26 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(asio)
 
+set(CMAKE_AUTOMOC ON)
+find_package(Qt6 COMPONENTS Core Quick Widgets Multimedia MultimediaWidgets REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(GST REQUIRED
+    gstreamer-1.0
+    gstreamer-video-1.0
+)
+
+
 add_executable(topend
     src/topcomputer.cpp
     src/pwmmath.cpp
     src/outgoingserver.cpp
     src/websocketserver.cpp
+    src/pilot_window.cpp
+    include/pilot_window.hpp
 )
+
 target_compile_definitions(topend PRIVATE
     ASIO_STANDALONE
     _WEBSOCKETPP_CPP11_STL_
@@ -44,9 +58,13 @@ target_include_directories(topend PRIVATE
     include/
     ${websocketpp_SOURCE_DIR}
     ${asio_SOURCE_DIR}/asio/include
+    ${GST_INCLUDE_DIRS}
 )
 target_link_libraries(topend PRIVATE
     nlohmann_json::nlohmann_json
+    Qt6::Core Qt6::Quick Qt6::Widgets Qt6::Multimedia Qt6::MultimediaWidgets
+    SDL2::SDL2 
+    ${GST_LIBRARIES}
 )
 
 add_executable(dummy_load
