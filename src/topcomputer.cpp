@@ -23,6 +23,7 @@ outgoingserver server_tx;
 int main(int argc, char* argv[])
 {
     gst_init(&argc, &argv);
+    qputenv("QT_MEDIA_BACKEND", "gstreamer");
     QApplication app (argc, argv);
     QApplication::setApplicationName("Dreamer Control System");
     QApplication::setApplicationVersion("0.1.0");

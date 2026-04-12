@@ -38,16 +38,22 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(GST REQUIRED
     gstreamer-1.0
     gstreamer-video-1.0
+    gstreamer-app-1.0
+    gstreamer-base-1.0 
 )
 
+qt_add_resources(SOURCES resources/resources.qrc)
 
 add_executable(topend
+    ${SOURCES}
     src/topcomputer.cpp
     src/pwmmath.cpp
     src/outgoingserver.cpp
     src/websocketserver.cpp
+    src/settingsDialog.cpp
     src/pilot_window.cpp
     include/pilot_window.hpp
+    include/settingsDialog.hpp
 )
 
 target_compile_definitions(topend PRIVATE
