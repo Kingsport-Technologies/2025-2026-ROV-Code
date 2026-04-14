@@ -13,6 +13,10 @@
 #include "pilot_window.hpp"
 #include <QApplication>
 #include <gst/gst.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_gamepad.h>
+#include "controller_interface.hpp"
+#include <atomic>
 
 using namespace std;
 using json = nlohmann::json;
@@ -24,24 +28,24 @@ int main(int argc, char* argv[])
 {
     gst_init(&argc, &argv);
     qputenv("QT_MEDIA_BACKEND", "gstreamer");
+    
+    ControllerInterface* interface = new ControllerInterface();
+    atomic<bool> running = true;
+
+    thread pollThread([&]() {
+        while (running) {
+            interface->runLoop();
+        }
+    });
     QApplication app (argc, argv);
     QApplication::setApplicationName("Dreamer Control System");
     QApplication::setApplicationVersion("0.1.0");
     QApplication::setOrganizationName("KTech");
     PilotWindow* pilot = new PilotWindow();
     pilot->show();
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, [&]() {
+        running = false;
+        pollThread.join();
+    });
     return app.exec();
-
-    // server_rx.send_callback(
-    //     [](nlohmann::json content) {
-    //         server_tx.sendMessage(content.dump());
-    //     }
-    // );
-
-    // // Run websocket server in a separate thread so it doesn't block
-    // std::thread ws_thread([](){ server_rx.start_server(); });
-    
-    // server_tx.start(argv[1], std::stoi(argv[2]));
-    
-    // ws_thread.join();
 }

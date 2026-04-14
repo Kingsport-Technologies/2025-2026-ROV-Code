@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QPalette>
 
+
 class PilotWindow : public QMainWindow
 {
     Q_OBJECT

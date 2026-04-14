@@ -32,7 +32,7 @@ FetchContent_MakeAvailable(asio)
 
 set(CMAKE_AUTOMOC ON)
 find_package(Qt6 COMPONENTS Core Quick Widgets Multimedia MultimediaWidgets REQUIRED)
-find_package(SDL2 REQUIRED)
+find_package(SDL3 REQUIRED)
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GST REQUIRED
@@ -52,8 +52,10 @@ add_executable(topend
     src/websocketserver.cpp
     src/settingsDialog.cpp
     src/pilot_window.cpp
+    src/controller_interface.cpp
     include/pilot_window.hpp
     include/settingsDialog.hpp
+    include/controller_interface.hpp
 )
 
 target_compile_definitions(topend PRIVATE
@@ -69,7 +71,7 @@ target_include_directories(topend PRIVATE
 target_link_libraries(topend PRIVATE
     nlohmann_json::nlohmann_json
     Qt6::Core Qt6::Quick Qt6::Widgets Qt6::Multimedia Qt6::MultimediaWidgets
-    SDL2::SDL2 
+    SDL3::SDL3 
     ${GST_LIBRARIES}
 )
 

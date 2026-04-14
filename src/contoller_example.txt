@@ -1,0 +1,29 @@
+SDL_Init(SDL_INIT_GAMEPAD);
+    int joystickCount = 0;
+    SDL_JoystickID* joysticks = SDL_GetJoysticks(&joystickCount);
+    if (joysticks && joystickCount > 0) {
+        SDL_Gamepad* gamepad = SDL_OpenGamepad(joysticks[0]);
+        if (gamepad) {
+            cout << SDL_GetGamepadName(gamepad) << endl;
+            int batteryPercent = 0;
+            SDL_PowerState powerState = SDL_GetJoystickPowerInfo(SDL_GetGamepadJoystick(gamepad), &batteryPercent);
+            if (powerState == SDL_POWERSTATE_ON_BATTERY) {
+                cout << "Battery: " << batteryPercent << "%" << endl;
+            } else if (powerState == SDL_POWERSTATE_CHARGING) {
+                cout << "Battery: " << batteryPercent << "% (charging)" << endl;
+            } else if (powerState == SDL_POWERSTATE_CHARGED) {
+                cout << "Battery: fully charged" << endl;
+            } else {
+                cout << "Battery: unknown" << endl;
+            }
+            SDL_Joystick* joystick = SDL_GetGamepadJoystick(gamepad);
+            int numAxes = SDL_GetNumJoystickAxes(joystick);
+            cout << "Axes (" << numAxes << "):" << endl;
+            for (int i = 0; i < numAxes; i++) {
+                Sint16 value = SDL_GetJoystickAxis(joystick, i);
+                cout << "  Axis " << i << ": " << value << endl;
+            }
+            SDL_CloseGamepad(gamepad);
+        }
+        SDL_free(joysticks);
+    }
