@@ -30,6 +30,15 @@ int main(int argc, char* argv[])
     qputenv("QT_MEDIA_BACKEND", "gstreamer");
     
     ControllerInterface* interface = new ControllerInterface();
+    QObject::connect(interface, &ControllerInterface::controllerAxisChanged, [](std::vector<Sint16> values) {
+        std::string out = "[";
+        for (size_t i = 0; i < values.size(); ++i) {
+            if (i > 0) out += ", ";
+            out += std::to_string(values[i]);
+        }
+        out += "]";
+        std::cout << "controllerAxisChanged: " << out << std::endl;
+    });
     atomic<bool> running = true;
 
     thread pollThread([&]() {

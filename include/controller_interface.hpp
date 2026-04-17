@@ -1,7 +1,7 @@
 #include <SDL3/SDL.h>
 #include <QObject>
-
-class ControllerInterface
+#include <vector>
+class ControllerInterface : public QObject
 {
     Q_OBJECT
     public:
@@ -9,5 +9,10 @@ class ControllerInterface
         ~ControllerInterface();
         void runLoop();
     signals:
-        void controllerAxisChanged();
+        void controllerAxisChanged(std::vector<Sint16> values);
+    private:
+        SDL_Gamepad* m_gamepad = nullptr;
+        bool m_gamepadConnected = false;
+        Sint16 m_acceptableErrorRange = 200;
+        std::vector<Sint16> m_values;
 };

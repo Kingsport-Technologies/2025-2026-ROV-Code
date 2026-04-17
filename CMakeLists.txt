@@ -53,9 +53,11 @@ add_executable(topend
     src/settingsDialog.cpp
     src/pilot_window.cpp
     src/controller_interface.cpp
+    src/pwmmath.cpp
     include/pilot_window.hpp
     include/settingsDialog.hpp
     include/controller_interface.hpp
+    include/pwmmath.hpp
 )
 
 target_compile_definitions(topend PRIVATE

@@ -181,6 +181,7 @@ void PwmMath::assign_to_thrusters() {
 PwmMath::PwmMath()
 {
     initialize_thrusters();
+    emit outgoingPWMData
 }
 void PwmMath::run_loop()
 {

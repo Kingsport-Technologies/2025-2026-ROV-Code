@@ -1,10 +1,11 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <QObject>
 
-class PwmMath
-{
-    
+class PwmMath : public QObject
+{   
+    Q_OBJECT
     public:
         PwmMath();
         //gpio pin numbers for each thruster
@@ -45,4 +46,8 @@ class PwmMath
         double to_thruster_microseconds(double value);
         void assign_to_thrusters();
         void run_loop();
+    slots:
+        void incomingControllerData();
+    signals:
+        void outgoingPWMData(int hfl, int hbl, int hfr, int hbr, int vl, int vf);
 };
