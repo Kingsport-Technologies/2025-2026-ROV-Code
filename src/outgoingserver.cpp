@@ -28,14 +28,34 @@ void outgoingserver::start(const char* ip, int port)
         exit(EXIT_FAILURE);
     }
 
-    if(connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) {
+    if(::connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) {
         perror("connect");
         exit(EXIT_FAILURE);
     }
     connected = true;
+    std::cout << "connected";
 }
 void outgoingserver::sendMessage(string content)
 {
+    if (!connected) return;
     const char* message = content.c_str();
-    send(clientSocket, message, strlen(message), 0);
+    send(clientSocket, message, strlen(message), MSG_NOSIGNAL);
+}
+void outgoingserver::sendPwmInstructions(int hfl, int hbl, int hfr, int hbr, int vl, int vr)
+{
+    json j;
+    j["type"] = "pwm";
+    j["thrusters"]["hfl"] = hfl;
+    j["thrusters"]["hbl"] = hbl;
+    j["thrusters"]["hfr"] = hfr;
+    j["thrusters"]["hbr"] = hbr;
+    j["thrusters"]["vl"] = vl;
+    j["thrusters"]["vr"] = vr;
+
+    sendMessage(j.dump());
+}
+void outgoingserver::startServer()
+{
+    QSettings* settings = new QSettings("KTech", "2526Dreamer");
+    start(settings->value("robot/ip").toString().toLocal8Bit().data(), settings->value("robot/port").toInt());
 }

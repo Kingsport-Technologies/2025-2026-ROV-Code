@@ -20,6 +20,8 @@ class PilotWindow : public QMainWindow
     public slots:
         void reloadVideos();
         void toggleTheme();
+    signals:
+        void sigReconnect();
     protected:
         void buildUi();
         QHBoxLayout* buildVideos();

@@ -181,7 +181,7 @@ void PwmMath::assign_to_thrusters() {
 PwmMath::PwmMath()
 {
     initialize_thrusters();
-    emit outgoingPWMData
+    emit outgoingPWMData(horiz_front_left, horiz_back_left, horiz_front_right, horiz_back_right, vert_left, vert_right);
 }
 void PwmMath::run_loop()
 {
@@ -191,4 +191,13 @@ void PwmMath::run_loop()
     max_magnitude = get_maxmagnitude();
     multiplier_value = get_multipliervalue();
     assign_to_thrusters();
+}
+void PwmMath::incomingControllerData(std::vector<Sint16> data)
+{
+    left_x = (float)data[0];
+    left_y = (float)data[1];
+    right_x = (float)data[2];
+    right_y = (float)data[3];
+    run_loop();
+    emit outgoingPWMData(horiz_front_left, horiz_back_left, horiz_front_right, horiz_back_right, vert_left, vert_right);
 }

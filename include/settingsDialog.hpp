@@ -23,4 +23,6 @@ class settingsDialog : public QDialog
         QLineEdit* m_address = nullptr;
         QLineEdit* m_stream1 = nullptr;
         QLineEdit* m_stream2 = nullptr;
+        QLineEdit* m_rovIp = nullptr;
+        QLineEdit* m_rovPort = nullptr;
 };

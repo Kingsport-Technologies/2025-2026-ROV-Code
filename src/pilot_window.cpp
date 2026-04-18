@@ -52,6 +52,7 @@ void PilotWindow::buildUi()
     robotStatusLayout->addRow("Connected: ", m_robot_connected);
     robotStatusLayout->addRow("Ping: ", m_robot_ping);
     robotStatusLayout->addRow(reconnect);
+    connect(reconnect, &QPushButton::clicked, this, &PilotWindow::sigReconnect);
     robotBoxLayout->addLayout(robotStatusLayout);
     robotBox->setLayout(robotBoxLayout);
 

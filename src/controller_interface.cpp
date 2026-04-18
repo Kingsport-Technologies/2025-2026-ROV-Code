@@ -25,7 +25,7 @@ ControllerInterface::ControllerInterface()
 
 ControllerInterface::~ControllerInterface()
 {
-    SDL_CloseGamepad(m_gamepad);
+    if (m_gamepad) SDL_CloseGamepad(m_gamepad);
 }
 
 void ControllerInterface::runLoop()
