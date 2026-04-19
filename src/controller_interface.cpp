@@ -13,6 +13,7 @@ ControllerInterface::ControllerInterface()
         m_gamepad = SDL_OpenGamepad(joysticks[0]);
         m_gamepadConnected = true;
         std::cout << "Controller connected: " << SDL_GetGamepadName(m_gamepad) << std::endl;
+        m_name = SDL_GetGamepadName(m_gamepad);
         SDL_Joystick* joystick = SDL_GetGamepadJoystick(m_gamepad);
         int numAxes = SDL_GetNumJoystickAxes(joystick);
         m_values.resize(numAxes);

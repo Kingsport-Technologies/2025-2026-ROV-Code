@@ -9,13 +9,14 @@
 #include <QPushButton>
 #include <QApplication>
 #include <QPalette>
+#include "controller_interface.hpp"
 
 
 class PilotWindow : public QMainWindow
 {
     Q_OBJECT
     public:
-        explicit PilotWindow(QWidget* parent = nullptr);
+        explicit PilotWindow(ControllerInterface *contoller, QWidget* parent = nullptr);
         ~PilotWindow() override = default;
     public slots:
         void reloadVideos();
@@ -42,4 +43,5 @@ class PilotWindow : public QMainWindow
         QLabel* m_controller_name = nullptr;
         QLabel* m_claw_status = nullptr;
         QLabel* m_claw_angle = nullptr;
+        ControllerInterface* m_contoller = nullptr;
 };

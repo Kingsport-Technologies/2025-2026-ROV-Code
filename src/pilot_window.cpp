@@ -10,13 +10,14 @@
 #include <QFormLayout>
 #include <QStyle>
 
-PilotWindow::PilotWindow(QWidget* parent)
+PilotWindow::PilotWindow(ControllerInterface *contoller, QWidget* parent)
 {
+    m_contoller = contoller;
     setWindowTitle("Dreamer Pilot");
     setMinimumSize(900, 600);
     resize(1100, 680);
     m_settings = new QSettings("KTech", "2526Dreamer");
-    buildUi();
+    buildUi();    
 }
 
 void PilotWindow::buildUi()
@@ -63,7 +64,7 @@ void PilotWindow::buildUi()
     controllerBoxLayout->addWidget(m_controllerIcon);
 
     QFormLayout* controllerStatusLayout = new QFormLayout();
-    m_controller_name = new QLabel("PS4 Controller");
+    m_controller_name = new QLabel(m_contoller->getControllerName());
     controllerStatusLayout->addRow("Controller: ", m_controller_name);
     controllerBoxLayout->addLayout(controllerStatusLayout);
     controllerBox->setLayout(controllerBoxLayout);
