@@ -64,7 +64,7 @@ void PilotWindow::buildUi()
     controllerBoxLayout->addWidget(m_controllerIcon);
 
     QFormLayout* controllerStatusLayout = new QFormLayout();
-    m_controller_name = new QLabel(m_contoller->getControllerName());
+    m_controller_name = new QLabel(QString::fromStdString(m_contoller->getControllerName()));
     controllerStatusLayout->addRow("Controller: ", m_controller_name);
     controllerBoxLayout->addLayout(controllerStatusLayout);
     controllerBox->setLayout(controllerBoxLayout);

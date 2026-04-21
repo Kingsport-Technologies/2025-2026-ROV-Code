@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         }
     });
 
-    PilotWindow* pilot = new PilotWindow();
+    PilotWindow* pilot = new PilotWindow(controller);
     pilot->show();
     // Re-wire quit now that the main window is visible.
     QObject::connect(&app, &QApplication::lastWindowClosed, &app, &QApplication::quit);
