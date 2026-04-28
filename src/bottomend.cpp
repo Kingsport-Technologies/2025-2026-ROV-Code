@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <cstdlib>
+#include <pigpiod_if2.h>
 
 using json = nlohmann::json;
 
@@ -17,6 +18,7 @@ int hbl = 18;
 int hbr = 19;
 int vl = 20;
 int vr = 21;
+int pi_num;
 void signal_callback_handler(int signum)
 {
     if(signum == 2 and connected)
@@ -28,8 +30,24 @@ void signal_callback_handler(int signum)
 }
 void updatePWM(char* buffer)
 {
-    json* j = json::parse(buffer);
-
+    try {
+        json* j = json::parse(buffer);
+        if(j["type"] == "pwm")
+        {
+            set_servo_pulsewidgth(pi_num, hfl, j["thrusters"]["hfl"]);
+            set_servo_pulsewidgth(pi_num, hbr, j["thrusters"]["hbr"]);
+            set_servo_pulsewidgth(pi_num, hbl, j["thrusters"]["hbl"]);
+            set_servo_pulsewidgth(pi_num, hfr, j["thrusters"]["hfr"]);
+            set_servo_pulsewidgth(pi_num, vl, j["thrusters"]["vl"]);
+            set_servo_pulsewidgth(pi_num, vr, j["thrusters"]["vr"]);
+        }
+    }
+    catch (err)
+    {
+        std::cout << "JSON decode error";
+        return;
+    }
+    
 }
 int main(int argc, char* argv[])
 {
@@ -55,6 +73,7 @@ int main(int argc, char* argv[])
     int clientSocket = accept(serverSocket, nullptr, nullptr);
     connected = true;
     std::cout << "Client Connected";
+    pi_num = pigpio_start();
     while (true) 
     {
         char buffer[1024] = { 0 };
