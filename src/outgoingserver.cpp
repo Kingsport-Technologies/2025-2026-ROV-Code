@@ -34,12 +34,19 @@ void outgoingserver::start(const char* ip, int port)
     }
     connected = true;
     std::cout << "connected";
+    emit changedConnectionStatus(true);
 }
 void outgoingserver::sendMessage(string content)
 {
     if (!connected) return;
     const char* message = content.c_str();
     send(clientSocket, message, strlen(message), MSG_NOSIGNAL);
+    struct tcp_info info;
+    socklen_t len = sizeof(info);
+    if (getsockopt(clientSocket, SOL_TCP, TCP_INFO, &info, &len) == 0) {
+        rtt_ms = info.tcpi_rtt / 1000.0;
+        emit changedPing(rtt_ms);
+    }
 }
 void outgoingserver::sendPwmInstructions(int hfl, int hbl, int hfr, int hbr, int vl, int vr)
 {
@@ -56,6 +63,14 @@ void outgoingserver::sendPwmInstructions(int hfl, int hbl, int hfr, int hbr, int
 }
 void outgoingserver::startServer()
 {
-    QSettings* settings = new QSettings("KTech", "2526Dreamer");
-    start(settings->value("robot/ip").toString().toLocal8Bit().data(), settings->value("robot/port").toInt());
+    if(!connected)
+    {
+        QSettings* settings = new QSettings("KTech", "2526Dreamer");
+        start(settings->value("robot/ip").toString().toLocal8Bit().data(), settings->value("robot/port").toInt());
+
+    }
+}
+double outgoingserver::getPing()
+{
+    return rtt_ms;
 }

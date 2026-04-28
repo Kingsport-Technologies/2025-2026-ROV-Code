@@ -42,12 +42,12 @@ int main(int argc, char* argv[])
             controller->runLoop();
         }
     });
+    outgoingserver server_tx;
 
-    PilotWindow* pilot = new PilotWindow(controller);
+    PilotWindow* pilot = new PilotWindow(controller, &server_tx);
     pilot->show();
     // Re-wire quit now that the main window is visible.
     QObject::connect(&app, &QApplication::lastWindowClosed, &app, &QApplication::quit);
-    outgoingserver server_tx;
     QObject::connect(pilot, &PilotWindow::sigReconnect, &server_tx, &outgoingserver::startServer);
     PwmMath* math = new PwmMath();
     QObject::connect(controller, &ControllerInterface::controllerAxisChanged, math, &PwmMath::incomingControllerData);

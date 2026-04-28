@@ -10,8 +10,9 @@
 #include <QFormLayout>
 #include <QStyle>
 
-PilotWindow::PilotWindow(ControllerInterface *contoller, QWidget* parent)
+PilotWindow::PilotWindow(ControllerInterface *contoller, outgoingserver *server, QWidget* parent)
 {
+    m_outgoingserver = server;
     m_contoller = contoller;
     setWindowTitle("Dreamer Pilot");
     setMinimumSize(900, 600);
@@ -49,6 +50,7 @@ void PilotWindow::buildUi()
         }
     )");
     m_robot_ping = new QLabel("0.00 ms");
+    connect(m_outgoingserver, &outgoingserver::changedPing, this, &PilotWindow::changePing);
     QPushButton* reconnect = new QPushButton("Reconnect");
     robotStatusLayout->addRow("Connected: ", m_robot_connected);
     robotStatusLayout->addRow("Ping: ", m_robot_ping);
@@ -238,4 +240,10 @@ void PilotWindow::applyTheme(bool dark)
 
     themeBtn->setStyleSheet(btnStyle);
     settingsBtn->setStyleSheet(btnStyle);
+}
+
+void PilotWindow::changePing(double ping)
+{
+    QString tmp_ping = QString("%1 ms").arg(ping);
+    m_robot_ping->setText(tmp_ping);
 }

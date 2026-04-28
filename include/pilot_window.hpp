@@ -10,17 +10,19 @@
 #include <QApplication>
 #include <QPalette>
 #include "controller_interface.hpp"
+#include "outgoingserver.hpp"
 
 
 class PilotWindow : public QMainWindow
 {
     Q_OBJECT
     public:
-        explicit PilotWindow(ControllerInterface *contoller, QWidget* parent = nullptr);
+        explicit PilotWindow(ControllerInterface *contoller, outgoingserver *server, QWidget* parent = nullptr);
         ~PilotWindow() override = default;
     public slots:
         void reloadVideos();
         void toggleTheme();
+        void changePing(double ping);
     signals:
         void sigReconnect();
     protected:
@@ -44,4 +46,5 @@ class PilotWindow : public QMainWindow
         QLabel* m_claw_status = nullptr;
         QLabel* m_claw_angle = nullptr;
         ControllerInterface* m_contoller = nullptr;
+        outgoingserver* m_outgoingserver = nullptr;
 };
