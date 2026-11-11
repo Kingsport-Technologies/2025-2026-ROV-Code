@@ -1,10 +1,15 @@
+#pragma once
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <QObject>
+#include <vector>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_gamepad.h>
 
-class PwmMath
-{
-    
+class PwmMath : public QObject
+{   
+    Q_OBJECT
     public:
         PwmMath();
         //gpio pin numbers for each thruster
@@ -45,4 +50,8 @@ class PwmMath
         double to_thruster_microseconds(double value);
         void assign_to_thrusters();
         void run_loop();
+    public slots:
+        void incomingControllerData(std::vector<Sint16> data);
+    signals:
+        void outgoingPWMData(int hfl, int hbl, int hfr, int hbr, int vl, int vf);
 };

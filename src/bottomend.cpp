@@ -1,3 +1,4 @@
+#include "json.hpp"
 #include <iostream>
 #include <string>
 #include <netinet/in.h>
@@ -5,10 +6,19 @@
 #include <unistd.h>
 #include <signal.h>
 #include <cstdlib>
+#include <pigpiod_if2.h>
 
+using json = nlohmann::json;
 
 bool connected = false;
 int serverSocket;
+int hfl = 16;
+int hfr = 17;
+int hbl = 18;
+int hbr = 19;
+int vl = 20;
+int vr = 21;
+int pi_num;
 void signal_callback_handler(int signum)
 {
     if(signum == 2 and connected)
@@ -17,6 +27,27 @@ void signal_callback_handler(int signum)
         std::cout << "Socket Successfully Closed" << std::endl;
     }
     exit(signum);
+}
+void updatePWM(char* buffer)
+{
+    try {
+        json* j = json::parse(buffer);
+        if(j["type"] == "pwm")
+        {
+            set_servo_pulsewidgth(pi_num, hfl, j["thrusters"]["hfl"]);
+            set_servo_pulsewidgth(pi_num, hbr, j["thrusters"]["hbr"]);
+            set_servo_pulsewidgth(pi_num, hbl, j["thrusters"]["hbl"]);
+            set_servo_pulsewidgth(pi_num, hfr, j["thrusters"]["hfr"]);
+            set_servo_pulsewidgth(pi_num, vl, j["thrusters"]["vl"]);
+            set_servo_pulsewidgth(pi_num, vr, j["thrusters"]["vr"]);
+        }
+    }
+    catch (err)
+    {
+        std::cout << "JSON decode error";
+        return;
+    }
+    
 }
 int main(int argc, char* argv[])
 {
@@ -28,6 +59,8 @@ int main(int argc, char* argv[])
     }
     int port = std::stoi(argv[1]);
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    int opt = 1;
+    setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
@@ -40,6 +73,7 @@ int main(int argc, char* argv[])
     int clientSocket = accept(serverSocket, nullptr, nullptr);
     connected = true;
     std::cout << "Client Connected";
+    pi_num = pigpio_start();
     while (true) 
     {
         char buffer[1024] = { 0 };

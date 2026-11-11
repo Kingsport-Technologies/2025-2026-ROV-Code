@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="/icons">
+    <file>settings.svg</file>
+    <file>submarine.svg</file>
+    <file>controller.svg</file>
+    <file>claw.svg</file>
+    <file>settings_dark.svg</file>
+    <file>submarine_dark.svg</file>
+    <file>controller_dark.svg</file>
+    <file>claw_dark.svg</file>
+    <file>moon_dark.svg</file>
+    <file>sun.svg</file>
+  </qresource>
+</RCC>
