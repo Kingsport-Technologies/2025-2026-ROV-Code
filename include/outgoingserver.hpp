@@ -24,6 +24,7 @@ class outgoingserver : public QObject
         void sendMessage(string message);
         void start(const char* ip, int port);
         double getPing();
+        outgoingserver* getoutgoingserver();
     public slots:
         void sendPwmInstructions(int hfl, int hbl, int hfr, int hbr, int vl, int vf);
         // void sendClawInstructions()
@@ -36,5 +37,6 @@ class outgoingserver : public QObject
         sockaddr_in serverAddress;
         bool connected;
         double rtt_ms = 0.0;
+        static inline outgoingserver* m_server;
 
 };

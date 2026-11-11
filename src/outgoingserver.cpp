@@ -5,6 +5,7 @@ outgoingserver::outgoingserver()
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     serverAddress.sin_family = AF_INET;
     connected = false;
+    m_server = this;
 }
 
 outgoingserver::~outgoingserver()
@@ -73,4 +74,9 @@ void outgoingserver::startServer()
 double outgoingserver::getPing()
 {
     return rtt_ms;
+}
+
+outgoingserver* outgoingserver::getoutgoingserver()
+{
+    return m_server;
 }

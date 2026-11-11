@@ -59,7 +59,7 @@ std::string ControllerInterface::getControllerName()
     return m_name;
 }
 
-ControllerInterface* getController()
+ControllerInterface* ControllerInterface::getController()
 {
     retrun m_controller;
 }
