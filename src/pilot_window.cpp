@@ -10,9 +10,9 @@
 #include <QFormLayout>
 #include <QStyle>
 
-PilotWindow::PilotWindow(outgoingserver *server, QWidget* parent)
+PilotWindow::PilotWindow(QWidget* parent)
 {
-    m_outgoingserver = server;
+    m_outgoingserver = outgoingserver::getoutgoingserver();
     m_contoller = ControllerInterface::getController();
     setWindowTitle("Dreamer Pilot");
     setMinimumSize(900, 600);

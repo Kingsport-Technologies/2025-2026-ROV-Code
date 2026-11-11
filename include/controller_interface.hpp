@@ -12,7 +12,7 @@ class ControllerInterface : public QObject
         void runLoop();
         std::string getControllerName();
         
-        ControllerInterface* getController();
+        static ControllerInterface* getController();
 
     signals:
         void controllerAxisChanged(std::vector<Sint16> values);

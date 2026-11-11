@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     // Creates a PwmMath object that does all of the thruster control math
     PwmMath* math = new PwmMath();
     // Creates the PilotWindow object (the main window)
-    PilotWindow* pilot = new PilotWindow(&server_tx);
+    PilotWindow* pilot = new PilotWindow();
     pilot->show();
     // Re-wire quit now that the main window is visible.
     QObject::connect(&app, &QApplication::lastWindowClosed, &app, &QApplication::quit);

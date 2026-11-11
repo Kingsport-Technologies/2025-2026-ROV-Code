@@ -17,7 +17,7 @@ class PilotWindow : public QMainWindow
 {
     Q_OBJECT
     public:
-        explicit PilotWindow(ControllerInterface *contoller, outgoingserver *server, QWidget* parent = nullptr);
+        explicit PilotWindow(QWidget* parent = nullptr);
         ~PilotWindow() override = default;
     public slots:
         void reloadVideos();
