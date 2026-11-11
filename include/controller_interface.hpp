@@ -11,6 +11,9 @@ class ControllerInterface : public QObject
         ~ControllerInterface();
         void runLoop();
         std::string getControllerName();
+        
+        ControllerInterface* getController();
+
     signals:
         void controllerAxisChanged(std::vector<Sint16> values);
     private:
@@ -19,4 +22,6 @@ class ControllerInterface : public QObject
         Sint16 m_acceptableErrorRange = 200;
         std::vector<Sint16> m_values;
         std::string m_name;
+
+        static inline ControllerInterface* m_controller;
 };

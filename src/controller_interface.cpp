@@ -22,6 +22,7 @@ ControllerInterface::ControllerInterface()
             m_values[i] = SDL_GetJoystickAxis(joystick, i);
         }
     }
+    m_controller = this;
 }
 
 ControllerInterface::~ControllerInterface()
@@ -56,4 +57,9 @@ void ControllerInterface::runLoop()
 std::string ControllerInterface::getControllerName()
 {
     return m_name;
+}
+
+ControllerInterface* getController()
+{
+    retrun m_controller;
 }

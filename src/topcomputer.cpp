@@ -1,3 +1,5 @@
+// This file contains the main function for the poolside opperation interface
+
 #include <string>
 #include <iostream>
 #include <netinet/in.h>
@@ -25,6 +27,7 @@ using json = nlohmann::json;
 
 int main(int argc, char* argv[])
 {
+    // Initializes QApplication and GStreamer
     gst_init(&argc, &argv);
     qputenv("QT_MEDIA_BACKEND", "gstreamer");
     QApplication app (argc, argv);
@@ -35,6 +38,7 @@ int main(int argc, char* argv[])
     // from triggering a quit when it closes.
     app.setQuitOnLastWindowClosed(false);
 
+    // Initializes Controller Loop
     ControllerInterface* controller = new ControllerInterface();
     atomic<bool> running = true;
     thread pollThread([&]() {
@@ -42,14 +46,17 @@ int main(int argc, char* argv[])
             controller->runLoop();
         }
     });
-    outgoingserver server_tx;
 
-    PilotWindow* pilot = new PilotWindow(controller, &server_tx);
+    // Initializes the outgoing server that sends data to the robot
+    outgoingserver server_tx;
+    // Creates a PwmMath object that does all of the thruster control math
+    PwmMath* math = new PwmMath();
+    // Creates the PilotWindow object (the main window)
+    PilotWindow* pilot = new PilotWindow(&server_tx);
     pilot->show();
     // Re-wire quit now that the main window is visible.
     QObject::connect(&app, &QApplication::lastWindowClosed, &app, &QApplication::quit);
     QObject::connect(pilot, &PilotWindow::sigReconnect, &server_tx, &outgoingserver::startServer);
-    PwmMath* math = new PwmMath();
     QObject::connect(controller, &ControllerInterface::controllerAxisChanged, math, &PwmMath::incomingControllerData);
     QObject::connect(math, &PwmMath::outgoingPWMData, &server_tx, &outgoingserver::sendPwmInstructions);
     QObject::connect(&app, &QCoreApplication::aboutToQuit, [&]() {
