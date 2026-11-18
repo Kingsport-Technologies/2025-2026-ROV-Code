@@ -5,6 +5,7 @@
 
 ControllerInterface::ControllerInterface()
 {
+    // Initialize SDL and check for connected gamepads
     SDL_Init(SDL_INIT_GAMEPAD);
     int joystickCount = 0;
     SDL_JoystickID* joysticks = SDL_GetJoysticks(&joystickCount);
@@ -27,11 +28,13 @@ ControllerInterface::ControllerInterface()
 
 ControllerInterface::~ControllerInterface()
 {
+    // Clean up SDL resources
     if (m_gamepad) SDL_CloseGamepad(m_gamepad);
 }
 
 void ControllerInterface::runLoop()
 {
+    // Main loop to poll controller input
     SDL_PumpEvents();
     if (m_gamepadConnected)
     {
@@ -56,10 +59,12 @@ void ControllerInterface::runLoop()
 }
 std::string ControllerInterface::getControllerName()
 {
+    // Return the name of the connected controller
     return m_name;
 }
 
 ControllerInterface* ControllerInterface::getController()
 {
+    // Return the singleton instance of the controller interface
     return m_controller;
 }

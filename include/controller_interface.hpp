@@ -3,6 +3,7 @@
 #include <QObject>
 #include <vector>
 #include <string>
+
 class ControllerInterface : public QObject
 {
     Q_OBJECT

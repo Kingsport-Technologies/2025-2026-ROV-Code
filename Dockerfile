@@ -52,19 +52,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	unzip \
 	wget \
 	xz-utils \
+	ca-certificates \
+	qt6-base-dev \
+	qt6-declarative-dev \
+	qt6-multimedia-dev \
+	libgstreamer1.0-dev \
+	libgstreamer-plugins-base1.0-dev \
+	libgstreamer-plugins-bad1.0-dev \
+	gstreamer1.0-plugins-base-apps \
+	gstreamer1.0-x \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN git clone --depth 1 https://github.com/mxe/mxe.git /opt/mxe \
-	&& make -C /opt/mxe MXE_TARGETS="${MXE_TARGET}" --jobs="${BUILD_JOBS}" JOBS="${BUILD_JOBS}" \
-		qt6-qtbase qt6-qtdeclarative qt6-qtmultimedia sdl3 gstreamer gst-plugins-base
-
-WORKDIR /workspace
-RUN git clone --depth 1 "${REPO_URL}" source
-WORKDIR /workspace/source
-
-RUN "${MXE_TARGET}-cmake" \
-		-S . \
-		-B build \
-		-DBUILD_TARGET=TOPEND \
+RUN git clone --depth 1 https://github.com/libsdl-org/SDL.git /tmp/SDL \
+	&& cmake -S /tmp/SDL -B /tmp/SDL/build \
 		-DCMAKE_BUILD_TYPE=Release \
-	&& cmake --build build --parallel "${BUILD_JOBS}"
+		-DSDL_TESTS=OFF \
+		-DSDL_TEST_LIBRARY=OFF \
+		-DCMAKE_INSTALL_PREFIX=/usr/local \
+	&& cmake --build /tmp/SDL/build --parallel ${BUILD_JOBS} \
+	&& cmake --install /tmp/SDL/build \
+	&& ldconfig \
+	&& rm -rf /tmp/SDL
