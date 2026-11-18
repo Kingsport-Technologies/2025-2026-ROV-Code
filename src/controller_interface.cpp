@@ -61,5 +61,5 @@ std::string ControllerInterface::getControllerName()
 
 ControllerInterface* ControllerInterface::getController()
 {
-    retrun m_controller;
+    return m_controller;
 }
