@@ -63,8 +63,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	gstreamer1.0-x \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN git clone --depth 1 https://github.com/libsdl-org/SDL.git /tmp/SDL \
-	&& cmake -S /tmp/SDL -B /tmp/SDL/build \
+# MXE's default x265 URL (bitbucket) is dead and the backup mirror 404s;
+# use the VideoLAN mirror (same tarball, same checksum).
+RUN git clone --depth 1 https://github.com/mxe/mxe.git /opt/mxe \
+	&& sed -i 's|^\$(PKG)_URL .*|$(PKG)_URL      := https://download.videolan.org/pub/videolan/x265/$($(PKG)_FILE)|' /opt/mxe/src/x265.mk \
+	&& grep -n '_URL' /opt/mxe/src/x265.mk \
+	&& make -C /opt/mxe MXE_TARGETS="${MXE_TARGET}" --jobs="${BUILD_JOBS}" JOBS="${BUILD_JOBS}" \
+		qt6-qtbase qt6-qtdeclarative qt6-qtmultimedia sdl3 gstreamer gst-plugins-base
+
+WORKDIR /workspace
+RUN git clone --depth 1 "${REPO_URL}" source
+WORKDIR /workspace/source
+
+RUN "${MXE_TARGET}-cmake" \
+		-S . \
+		-B build \
+		-DBUILD_TARGET=TOPEND \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DSDL_TESTS=OFF \
 		-DSDL_TEST_LIBRARY=OFF \

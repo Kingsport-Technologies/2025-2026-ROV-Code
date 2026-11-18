@@ -8,14 +8,14 @@ ControllerInterface::ControllerInterface()
     // Initialize SDL and check for connected gamepads
     SDL_Init(SDL_INIT_GAMEPAD);
     int joystickCount = 0;
-    SDL_JoystickID* joysticks = SDL_GetJoysticks(&joystickCount);
+    SDL_JoystickID *joysticks = SDL_GetJoysticks(&joystickCount);
     if (joysticks && joystickCount > 0)
     {
         m_gamepad = SDL_OpenGamepad(joysticks[0]);
         m_gamepadConnected = true;
         std::cout << "Controller connected: " << SDL_GetGamepadName(m_gamepad) << std::endl;
         m_name = SDL_GetGamepadName(m_gamepad);
-        SDL_Joystick* joystick = SDL_GetGamepadJoystick(m_gamepad);
+        SDL_Joystick *joystick = SDL_GetGamepadJoystick(m_gamepad);
         int numAxes = SDL_GetNumJoystickAxes(joystick);
         m_values.resize(numAxes);
         for (int i = 0; i < numAxes; i++)
@@ -29,7 +29,8 @@ ControllerInterface::ControllerInterface()
 ControllerInterface::~ControllerInterface()
 {
     // Clean up SDL resources
-    if (m_gamepad) SDL_CloseGamepad(m_gamepad);
+    if (m_gamepad)
+        SDL_CloseGamepad(m_gamepad);
 }
 
 void ControllerInterface::runLoop()
@@ -39,18 +40,18 @@ void ControllerInterface::runLoop()
     if (m_gamepadConnected)
     {
         bool signal = false;
-        SDL_Joystick* joystick = SDL_GetGamepadJoystick(m_gamepad);
+        SDL_Joystick *joystick = SDL_GetGamepadJoystick(m_gamepad);
         int numAxes = SDL_GetNumJoystickAxes(joystick);
         for (int i = 0; i < numAxes; i++)
         {
             Sint16 value = SDL_GetJoystickAxis(joystick, i);
-            if(SDL_abs(value - m_values[i]) > m_acceptableErrorRange)
+            if (SDL_abs(value - m_values[i]) > m_acceptableErrorRange)
             {
                 signal = true;
                 m_values[i] = value;
             }
         }
-        if(signal)
+        if (signal)
         {
             emit controllerAxisChanged(m_values);
         }
@@ -63,7 +64,7 @@ std::string ControllerInterface::getControllerName()
     return m_name;
 }
 
-ControllerInterface* ControllerInterface::getController()
+ControllerInterface *ControllerInterface::getController()
 {
     // Return the singleton instance of the controller interface
     return m_controller;
